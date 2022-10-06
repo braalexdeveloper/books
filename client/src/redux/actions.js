@@ -17,8 +17,10 @@ import {
 } from "./types.js";
 import axios from "axios";
 
+const baseUrl = process.env.REACT_APP_API || 'http://localhost:3001';
+
 export const getBooks = () => async (dispatch) => {
-  let dataBooks = await axios(`http://localhost:3001/shop/books`);
+  let dataBooks = await axios(`${baseUrl}/shop/books`);
 
   return dispatch({
     type: GET_BOOKS,
@@ -27,7 +29,7 @@ export const getBooks = () => async (dispatch) => {
 };
 
 export const getDetailBook = (id) => async (dispatch) => {
-  let bookDetail = await axios(`http://localhost:3001/shop//book/${id}`);
+  let bookDetail = await axios(`${baseUrl}/shop//book/${id}`);
 
   return dispatch({
     type: GET_DETAIL_BOOK,
@@ -39,7 +41,7 @@ export const resetDetail = () => ({ type: RESET_DETAIL });
 
 export function getAllCategories() {
   return async (dispatch) => {
-    let res = await axios.get(`http://localhost:3001/shop/categories`);
+    let res = await axios.get(`${baseUrl}/shop/categories`);
     return dispatch({
       type: GET_ALL_CATEGORIES,
       payload: res.data,
@@ -52,7 +54,7 @@ export function postCreateBook(input) {
     try {
       dispatch(setStatus("Guardando"));
       var res = await axios.post(
-        `http://localhost:3001/admin/create-book`,
+        `${baseUrl}/admin/create-book`,
         input
       );
       return dispatch({
@@ -89,7 +91,7 @@ export function filterPrice(price) {
 export function categoryBooks(category) {
   return async (dispatch) => {
     let res = await axios.get(
-      `http://localhost:3001/shop/booksCategory?name=${category}`
+      `${baseUrl}/shop/booksCategory?name=${category}`
     );
     return dispatch({
       type: CATEGORY_BOOKS,
@@ -105,7 +107,7 @@ export function searchBook(book) {
     try {
       dispatch(setStatus("Cargando"));
       var res = await axios.get(
-        `http://localhost:3001/shop/books/filter?value=${book}`
+        `${baseUrl}/shop/books/filter?value=${book}`
       );
       return dispatch({
         type: SEARCH_BOOK,
@@ -119,7 +121,7 @@ export function searchBook(book) {
 
 export function login(body) {
   return async (dispatch) => {
-    let res = await axios.post(`http://localhost:3001/users/login`, body);
+    let res = await axios.post(`${baseUrl}/users/login`, body);
     return dispatch({
       type: LOGIN,
       payload: res.data,
@@ -132,7 +134,7 @@ export function register(body) {
   return async (dispatch) => {
     try{
       dispatch(setStatus("Guardando"));
-    let res = await axios.post("http://localhost:3001/users/register", body);
+    let res = await axios.post(baseUrl+"/users/register", body);
     return dispatch({
       type: REGISTER,
       payload: res.data.status?"Usuario se guardo correctamente":res.data.messsage,
